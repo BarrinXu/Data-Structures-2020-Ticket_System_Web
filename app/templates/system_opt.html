@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}
+    系统操作
+{% endblock %}
+
+{% block app_content %}
+    <br>
+    <div class="jumbotron text-center">
+        <h2 style="color: deeppink">危险的系统操作</h2>
+        <hr>
+        <div class="list-group">
+            <a href="{{ url_for('delete_system') }}" class="list-group-item list-group-item-danger">
+                删库
+            </a>
+            <hr>
+            <a href="{{ url_for('exit_system') }}" class="list-group-item list-group-item-danger">
+                系统退出
+            </a>
+        </div>
+{#        <li><a href="{{ url_for('delete_system') }}"></a></li>#}
+    </div>
+
+    <br>
+{% endblock %}

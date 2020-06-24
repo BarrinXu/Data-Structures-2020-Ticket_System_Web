@@ -9,6 +9,7 @@ import subprocess as sp
 import time
 import fcntl
 import os
+import json
 
 path = './code'
 echo = sp.Popen(path, stdin=sp.PIPE, stdout=sp.PIPE, universal_newlines=True)
@@ -35,6 +36,12 @@ def com(s):
 # @login_required
 def index():
     return render_template('index.html')
+
+
+@app.route('/system_opt')
+# @login_required
+def system_opt():
+    return render_template('system_opt.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -111,6 +118,29 @@ def logout():
         flash('登出失败！', category='warning')
     return redirect(url_for('index'))
 
+
+@app.route('/delete_system')
+def delete_system():
+    tmp = 'clean'
+    print(tmp)
+    ret = com(tmp)
+    logout_user()
+    flash('删库成功！', category='success')
+    flash('您已成功登出！', category='success')
+    return redirect(url_for('index'))
+
+
+@app.route('/exit_system')
+@login_required
+def exit_system():
+    tmp = 'exit'
+    print(tmp)
+    ret = com(tmp)
+    print(ret)
+    logout_user()
+    flash('系统已关闭！', category='success')
+    flash('您已成功登出！', category='success')
+    return redirect(url_for('index'))
 
 @app.route('/user_info', methods=['GET', 'POST'])
 @login_required
@@ -329,3 +359,26 @@ def refund(number):
     else:
         flash('退订失败！', category='danger')
     return redirect(url_for('order'))
+
+
+@app.route("/quick_buy",methods=['GET','POST'])
+def quick_buy():
+    if request.method=='POST':
+        dat=request.get_data()
+        dict1=json.loads(dat)
+        tmp = 'buy_ticket'
+        tmp += ' -u ' + str(current_user.username)
+        tmp += ' -i ' + str(dict1['train_name'])
+        tmp += ' -d ' + str(dict1['start_date'])
+        tmp += ' -n ' + str(dict1['how_many'])
+        tmp += ' -f ' + str(dict1['start_station'])
+        tmp += ' -t ' + str(dict1['end_station'])
+        # tmp += ' -q ' + str(buy_form.choice.data)
+        print(tmp)
+        # 通信
+        ret = com(tmp)
+        print(ret)
+        if ret == '-1':
+            return '0'
+        else:
+            return str(dict1['how_many'])
