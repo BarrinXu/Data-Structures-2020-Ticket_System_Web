@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    订单查询
+{% endblock %}
+
+{% block app_content %}
+
+    <div>
+        <h3><strong>{{ current_user.username }}</strong>的所有订单</h3>
+        <hr>
+        {% if post[0][0] == '-1' %}
+            <h4>查询失败</h4>
+        {% elif post[0][0] == '0' %}
+            <h4>您当前没有订单！</h4>
+        {% else %}
+            <h4>您当前有 <strong>{{ post[0][0] }}</strong> 个订单</h4>
+            <hr>
+            <table class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>订单状态</th>
+                    <th>车次名称</th>
+                    <th>出发站</th>
+                    <th>出发日期</th>
+                    <th>出发时间</th>
+                    <th></th>
+                    <th>到达站</th>
+                    <th>到达日期</th>
+                    <th>到达时间</th>
+                    <th>总价</th>
+                    <th>购票数</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in range(1,post.__len__()) %}
+                    <tr>
+                        <td>{{ i }}</td>
+                        <td>{{ post[i][0] }}</td>
+                        <td>{{ post[i][1] }}</td>
+                        <td>{{ post[i][2] }}</td>
+                        <td>{{ post[i][3] }}</td>
+                        <td>{{ post[i][4] }}</td>
+                        <td>➡</td>
+                        <td>{{ post[i][6] }}</td>
+                        <td>{{ post[i][7] }}</td>
+                        <td>{{ post[i][8] }}</td>
+                        <td>{{ post[i][9] }}</td>
+                        <td>{{ post[i][10] }}</td>
+                        {% if post[i][0]=='已退票' %}
+                            <td></td>
+                        {% else %}
+                            <td>
+                                <a type="button" class="btn btn-default btn-sm"
+                                   href="{{ url_for('refund', number = i) }}">退订</a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+
+{% endblock %}

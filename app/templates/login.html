@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    登录
+{% endblock %}
+
+{% block app_content %}
+    <br>
+    <h1>Sign In Now</h1>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            {% import 'bootstrap/wtf.html' as wtf %}
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+{% endblock %}

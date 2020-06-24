@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    车票查询与预定
+{% endblock %}
+
+{% block app_content %}
+    <ul id="myTab" class="nav nav-tabs">
+        <li class="active">
+            <a href="#query" data-toggle="tab">
+                车票查询
+            </a>
+        </li>
+        {% if current_user.is_authenticated %}
+            <li>
+                <a href="#buy" data-toggle="tab">车票预定</a>
+            </li>
+        {% endif %}
+    </ul>
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="query">
+            <div class="col-md-4">
+                <h3>车票查询</h3>
+                {% import 'bootstrap/wtf.html' as wtf %}
+                {{ wtf.quick_form(query_form) }}
+            </div>
+            {% if query_post %}
+                <div class="col-md-8">
+                    {% if query_post[0][0]=='0' %}
+                        <h4>没有车次符合要求！</h4>
+                    {% elif query_post[0].__len__()==1 %}
+                        <table class="table table-hover table-bordered">
+                            <h4>有 <strong>{{ query_post[0][0] }}</strong> 辆车符合要求</h4>
+                            <thead>
+                            <tr>
+                                <th>车次名称</th>
+                                <th>出发站</th>
+                                <th>出发日期</th>
+                                <th>出发时间</th>
+                                <th></th>
+                                <th>到达站</th>
+                                <th>到达日期</th>
+                                <th>到达时间</th>
+                                <th>总价</th>
+                                <th>余票</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for i in range(1,query_post.__len__()) %}
+                                <tr>
+                                    <td>{{ query_post[i][0] }}</td>
+                                    <td>{{ query_post[i][1] }}</td>
+                                    <td>{{ query_post[i][2] }}</td>
+                                    <td>{{ query_post[i][3] }}</td>
+                                    <td>➡</td>
+                                    <td>{{ query_post[i][5] }}</td>
+                                    <td>{{ query_post[i][6] }}</td>
+                                    <td>{{ query_post[i][7] }}</td>
+                                    <td>{{ query_post[i][8] }}</td>
+                                    <td>{{ query_post[i][9] }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <table class="table table-hover table-bordered">
+                            <h4>查询到换乘方案！</h4>
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>车次名称</th>
+                                <th>出发站</th>
+                                <th>出发日期</th>
+                                <th>出发时间</th>
+                                <th></th>
+                                <th>到达站</th>
+                                <th>到达日期</th>
+                                <th>到达时间</th>
+                                <th>总价</th>
+                                <th>余票</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr>
+                                <td>1</td>
+                                <td>{{ query_post[0][0] }}</td>
+                                <td>{{ query_post[0][1] }}</td>
+                                <td>{{ query_post[0][2] }}</td>
+                                <td>{{ query_post[0][3] }}</td>
+                                <td>➡</td>
+                                <td>{{ query_post[0][5] }}</td>
+                                <td>{{ query_post[0][6] }}</td>
+                                <td>{{ query_post[0][7] }}</td>
+                                <td>{{ query_post[0][8] }}</td>
+                                <td>{{ query_post[0][9] }}</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>{{ query_post[1][0] }}</td>
+                                <td>{{ query_post[1][1] }}</td>
+                                <td>{{ query_post[1][2] }}</td>
+                                <td>{{ query_post[1][3] }}</td>
+                                <td>➡</td>
+                                <td>{{ query_post[1][5] }}</td>
+                                <td>{{ query_post[1][6] }}</td>
+                                <td>{{ query_post[1][7] }}</td>
+                                <td>{{ query_post[1][8] }}</td>
+                                <td>{{ query_post[1][9] }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        {% if current_user.is_authenticated %}
+            <div class="tab-pane fade" id="buy">
+
+                <div class="col-md-4">
+                    <h3>车票预定</h3>
+                    {% import 'bootstrap/wtf.html' as wtf %}
+                    {{ wtf.quick_form(buy_form) }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+
+{% endblock %}

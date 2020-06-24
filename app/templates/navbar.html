@@ -1,0 +1,59 @@
+<nav class="navbar navbar-default" style="margin: 0px">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('index') }}">火车票管理系统</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="{% if request.endpoint == 'index' %} active {% endif %}">
+                    <a href="{{ url_for('index') }}">欢迎页</a>
+                </li>
+                <li class="{% if request.endpoint == 'train_ticket' %} active {% endif %}">
+                    <a href="{{ url_for('train_ticket') }}">车票查询与预定</a>
+                </li>
+                <li class="{% if request.endpoint == 'train_info' %} active {% endif %}">
+                    <a href="{{ url_for('train_info') }}">车次维护</a>
+                </li>
+                <li class="{% if request.endpoint == 'order' %} active {% endif %}">
+                    <a href="{{ url_for('order') }}">订单查询</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                    <li class="{% if request.endpoint == 'user_info' %} active {% endif %}">
+                        <a href="{{ url_for('user_info') }}">用户信息维护</a>
+                    </li>
+                {% endif %}
+                {% if not current_user.is_authenticated %}
+                    <li class="{% if request.endpoint == 'login' %} active {% endif %}">
+                        <a href="{{ url_for('login') }}">登录</a>
+                    </li>
+                {% endif %}
+                <li class="{% if request.endpoint == 'register' %} active {% endif %}">
+                    <a href="{{ url_for('register') }}">添加新用户</a>
+                </li>
+                {% if current_user.is_authenticated %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">{{ current_user.username }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('logout') }}">注销</a></li>
+                            {#<li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>#}
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
